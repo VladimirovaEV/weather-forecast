@@ -1,0 +1,4 @@
+{
+    "apiEndpoint": "https://weather-forecast-e4680-default-rtdb.europe-west1.firebasedatabase.app/",
+    "isFireBase": true
+}
