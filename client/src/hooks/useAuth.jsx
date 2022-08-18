@@ -5,9 +5,11 @@ import userService from "../services/user.service";
 import { toast } from "react-toastify";
 import localStorageService, { setTokens } from "../services/localStorage.service";
 import { useHistory } from "react-router-dom";
+import config from "../utils/config.json";
 
 export const httpAuth = axios.create({
-    baseURL: "https://identitytoolkit.googleapis.com/v1/",
+    // baseURL: "https://identitytoolkit.googleapis.com/v1/",
+    baseURL: config.apiEndpoint + "/auth/",
     params: {
         key: process.env.REACT_APP_FIREBASE_KEY
     }
@@ -25,7 +27,8 @@ const AuthProvider = ({ children }) => {
     const history = useHistory();
     async function logIn({ email, password }) {
         try {
-            const { data } = await httpAuth.post(`accounts:signInWithPassword`, {
+            // const { data } = await httpAuth.post(`accounts:signInWithPassword`, {
+            const { data } = await httpAuth.post(`signInWithPassword`, {
                 email,
                 password,
                 returnSecureToken: true
@@ -54,14 +57,20 @@ const AuthProvider = ({ children }) => {
     };
     async function signUp({ email, password, ...rest }) {
         try {
-            const { data } = await httpAuth.post(`accounts:signUp`, {
+            // const { data } = await httpAuth.post(`accounts:signUp`, {
+            const { data } = await httpAuth.post(`signUp`, {
                 email,
                 password,
                 returnSecureToken: true
             });
             setTokens(data);
 
-            await createUser({ _id: data.localId, email, favorite: [], ...rest });
+            await createUser({
+                _id: data.localId,
+                email,
+                favorite: [],
+                ...rest
+            });
         } catch (error) {
             errorCatcher(error);
             const { code, message } = error.response.data.error;
