@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import { useAuth } from "../hooks/useAuth";
 import { useFavorite } from "../hooks/useFavorite";
 
-const ItemCardPage = ({ tempMin, tempMax, name, icon, country, wind }) => {
+const ItemCardPage = ({ tempMin, tempMax, name, icon, country, wind, id }) => {
     const { currentUser } = useAuth();
-    const { getFavorite } = useFavorite();
+    const { addToFavorite } = useFavorite();
     const date = new Date();
     return (
         <>
@@ -27,7 +27,7 @@ const ItemCardPage = ({ tempMin, tempMax, name, icon, country, wind }) => {
                                         type="button"
                                         className="btn btn-primary"
                                         // onClick={() => handleAddToFavorite(name)}
-                                        onClick={() => getFavorite(name)}
+                                        onClick={() => addToFavorite(id)}
                                     >
                                         Добавить в избранное
                                     </button>
@@ -49,7 +49,8 @@ ItemCardPage.propTypes = {
     wind: PropTypes.number,
     icon: PropTypes.string,
     handleClick: PropTypes.func,
-    city: PropTypes.string
+    city: PropTypes.string,
+    id: PropTypes.number
 };
 
 export default ItemCardPage;

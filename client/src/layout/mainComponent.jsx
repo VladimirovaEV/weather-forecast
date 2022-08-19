@@ -24,6 +24,7 @@ const MainComponent = () => {
                 icon={data.weather[0].icon}
                 wind={data.wind.speed}
                 data={data}
+                id={data.id}
             />
             )}
         </>

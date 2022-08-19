@@ -6,8 +6,9 @@ import { API_URL, API_KEY } from "../utils/openWeatherInfo";
 import ItemCardFavorite from "../page/itemCardFavorite";
 
 const SelectedPage = () => {
-    const { favorite } = useFavorite();
+    const { getFavorites } = useFavorite();
     const { setUrl } = UseFetch();
+    const favorite = getFavorites();
     console.log(favorite);
     // useEffect(() => {
     //     favorite.map((item) => {
@@ -24,27 +25,11 @@ const SelectedPage = () => {
                 >
                 Посмотреть избранное
                 </button> */}
-                {/* {data &&
-                    favorite.map((data, index) => {
-                        return (
-                                <ItemCardFavorite
-                                    dt={data.dt}
-                                    tempMin={data.main.temp_min}
-                                    tempMax={data.main.temp_max}
-                                    name={data.name}
-                                    country={data.sys.country}
-                                    icon={data.weather[0].icon}
-                                    wind={data.wind.speed}
-                                    data={data}
-                                />
-                        );
-                    })
-                } */}
                 {
                     (favorite.map((item) => {
                         const data = setUrl(`${API_URL}weather?q=${item}&appid=${API_KEY}&units=metric`);
                         return (
-                            <ItemCardFavorite
+                            <ItemCardFavorite key={data.id}
                                 dt={data.dt}
                                 tempMin={data.main.temp_min}
                                 tempMax={data.main.temp_max}
@@ -53,6 +38,7 @@ const SelectedPage = () => {
                                 icon={data.weather[0].icon}
                                 wind={data.wind.speed}
                                 data={data}
+                                id={data.id}
                             />
                         );
                     }))

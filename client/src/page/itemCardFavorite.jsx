@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const ItemCardFavorite = ({ tempMin, tempMax, name, icon, country, wind }) => {
+const ItemCardFavorite = ({ tempMin, tempMax, name, icon, country, wind, id }) => {
     const date = new Date();
     return (
         <>
@@ -41,7 +41,8 @@ ItemCardFavorite.propTypes = {
     wind: PropTypes.number,
     icon: PropTypes.string,
     handleClick: PropTypes.func,
-    city: PropTypes.string
+    city: PropTypes.string,
+    id: PropTypes.number
 };
 
 export default ItemCardFavorite;

@@ -1,14 +1,13 @@
 import React, { useContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
-import userService from "../services/user.service";
+// import userService from "../services/user.service";
 import { toast } from "react-toastify";
 import localStorageService, { setTokens } from "../services/localStorage.service";
 import { useHistory } from "react-router-dom";
 import config from "../utils/config.json";
 
 export const httpAuth = axios.create({
-    // baseURL: "https://identitytoolkit.googleapis.com/v1/",
     baseURL: config.apiEndpoint + "/auth/",
     params: {
         key: process.env.REACT_APP_FIREBASE_KEY
@@ -21,20 +20,20 @@ export const useAuth = () => {
 };
 
 const AuthProvider = ({ children }) => {
-    const [currentUser, setUser] = useState();
+    const [currentUser, setUser] = useState(localStorageService.getUserId());
     const [error, setError] = useState(null);
-    const [isLoading, setLoading] = useState(true);
+    const [isLoading] = useState(false);
     const history = useHistory();
     async function logIn({ email, password }) {
         try {
-            // const { data } = await httpAuth.post(`accounts:signInWithPassword`, {
             const { data } = await httpAuth.post(`signInWithPassword`, {
                 email,
                 password,
                 returnSecureToken: true
             });
             setTokens(data);
-            await getUserData();
+            // await getUserData();
+            setUser(data.userId);
         } catch (error) {
             errorCatcher(error);
             const { code, message } = error.response.data.error;
@@ -57,20 +56,19 @@ const AuthProvider = ({ children }) => {
     };
     async function signUp({ email, password, ...rest }) {
         try {
-            // const { data } = await httpAuth.post(`accounts:signUp`, {
             const { data } = await httpAuth.post(`signUp`, {
                 email,
                 password,
                 returnSecureToken: true
             });
             setTokens(data);
-
-            await createUser({
-                _id: data.localId,
-                email,
-                favorite: [],
-                ...rest
-            });
+            setUser(data.userId);
+            // await createUser({
+            //     _id: data.localId,
+            //     email,
+            //     favorite: [],
+            //     ...rest
+            // });
         } catch (error) {
             errorCatcher(error);
             const { code, message } = error.response.data.error;
@@ -84,36 +82,36 @@ const AuthProvider = ({ children }) => {
             }
         }
     }
-    async function createUser(data) {
-        try {
-            const { content } = await userService.create(data);
-            console.log(content);
-            setUser(content);
-        } catch (error) {
-            errorCatcher(error);
-        }
-    }
+    // async function createUser(data) {
+    //     try {
+    //         const { content } = await userService.create(data);
+    //         console.log(content);
+    //         setUser(content);
+    //     } catch (error) {
+    //         errorCatcher(error);
+    //     }
+    // }
     function errorCatcher(error) {
         const { message } = error.response.data;
         setError(message);
     };
-    async function getUserData() {
-        try {
-            const { content } = await userService.getCurrentUser();
-            setUser(content);
-        } catch (error) {
-            errorCatcher(error);
-        } finally {
-            setLoading(false);
-        }
-    }
-    useEffect(() => {
-        if (localStorageService.getAccessToken()) {
-            getUserData();
-        } else {
-            setLoading(false);
-        }
-    }, []);
+    // async function getUserData() {
+    //     try {
+    //         const { content } = await userService.getCurrentUser();
+    //         setUser(content);
+    //     } catch (error) {
+    //         errorCatcher(error);
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // }
+    // useEffect(() => {
+    //     if (localStorageService.getAccessToken()) {
+    //         getUserData();
+    //     } else {
+    //         setLoading(false);
+    //     }
+    // }, []);
     useEffect(() => {
         if (error !== null) {
             toast(error);
