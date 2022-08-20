@@ -21,7 +21,7 @@ export const FavoriteProvider = ({ children }) => {
         });
     };
     const getFavorites = (id) => {
-        httpService.get(`${config.apiEndpoint}/favorite/?orderBy=userId&equalTo=${localStorageService.getUserId()}`).then(result => console.log(result.data.content));
+        return httpService.get(`${config.apiEndpoint}/favorite/?orderBy=userId&equalTo=${localStorageService.getUserId()}`);
     };
     return (
         <FavoriteContext.Provider value = {{ addToFavorite, getFavorites }}>

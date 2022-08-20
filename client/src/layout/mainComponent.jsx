@@ -5,7 +5,6 @@ import UseFetch from "../hooks/useFetch";
 import { API_URL, API_KEY } from "../utils/openWeatherInfo";
 
 const MainComponent = () => {
-    // const { data, error, isloading, setUrl } = UseFetch();
     const { data, setUrl } = UseFetch();
     console.log(data);
     return (
