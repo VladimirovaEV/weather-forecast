@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
 // import UserProvider from "../hooks/useUsers";
 import { useFavorite } from "../hooks/useFavorite";
-// import UseFetch from "../hooks/useFetch";
+import UseFetch from "../hooks/useFetch";
 import { API_URL, API_KEY } from "../utils/openWeatherInfo";
 import ItemCardFavorite from "../page/itemCardFavorite";
 
 const SelectedPage = () => {
     const { getFavorites } = useFavorite();
-    // const { data, setUrl } = UseFetch();
+    const { data, setUrl } = UseFetch();
     const [favorite, setFavorites] = useState([]);
-    const [data, setData] = useState([]);
     useEffect(() => {
         const fetchFavorite = async () => {
             const result = await getFavorites();
@@ -23,7 +22,7 @@ const SelectedPage = () => {
             {/* <UserProvider> */}
             {
                 (favorite.map((item) => {
-                    const data = setUrl(`${API_URL}weather?id=${item.cityId}&appid=${API_KEY}&units=metric`);
+                    setUrl(`${API_URL}weather?id=${item.cityId}&appid=${API_KEY}&units=metric`);
                     console.log(data);
                     return (
                         <ItemCardFavorite key={data.id}
