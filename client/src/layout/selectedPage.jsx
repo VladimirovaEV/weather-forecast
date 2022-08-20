@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import UserProvider from "../hooks/useUsers";
 import { useFavorite } from "../hooks/useFavorite";
 import UseFetch from "../hooks/useFetch";
@@ -8,23 +8,17 @@ import ItemCardFavorite from "../page/itemCardFavorite";
 const SelectedPage = () => {
     const { getFavorites } = useFavorite();
     const { setUrl } = UseFetch();
-    const favorite = getFavorites();
-    console.log(favorite);
-    // useEffect(() => {
-    //     favorite.map((item) => {
-    //         return (setUrl(`${API_URL}weather?q=${item}&appid=${API_KEY}&units=metric`));
-    // });
-    // }, []);
+    const [favorite, setFavorites] = useState([]);
+    useEffect(() => {
+        const fetchFavorite = async () => {
+            const result = await getFavorites();
+            setFavorites(result.data);
+        };
+        fetchFavorite();
+    }, []);
     return (
         <>
             <UserProvider>
-                {/* <button
-                    type="button"
-                    className="text-center btn btn-primary"
-                    onClick={() => setUrl(`${API_URL}weather?q=${favorite[0]}&appid=${API_KEY}&units=metric`)}
-                >
-                Посмотреть избранное
-                </button> */}
                 {
                     (favorite.map((item) => {
                         const data = setUrl(`${API_URL}weather?q=${item}&appid=${API_KEY}&units=metric`);
