@@ -9,7 +9,7 @@ const ItemCardPage = ({ tempMin, tempMax, name, icon, country, wind, id }) => {
     const date = new Date();
     return (
         <>
-            <div className="container">
+            <div className="container bg-light">
                 <div className="row">
                     <div className="col-md-4"></div>
                     <div className="col-md-4">
