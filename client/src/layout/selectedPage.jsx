@@ -10,15 +10,14 @@ const SelectedPage = () => {
     // const { data, setUrl } = UseFetch();
     const [favorite, setFavorites] = useState([]);
     const arr = [];
+    const [city, setCity] = useState([]);
     useEffect(() => {
         const fetchFavorite = async () => {
             const result = await getFavorites();
             setFavorites(result.data.content);
         };
         fetchFavorite();
-    }, []);
-    console.log(favorite);
-    const requests = favorite.map((item) => fetch(`${API_URL}weather?id=${item.cityId}&appid=${API_KEY}&units=metric`));
+        const requests = favorite.map((item) => fetch(`${API_URL}weather?id=${item.cityId}&appid=${API_KEY}&units=metric`));
     Promise.all(requests)
         .then((responses) => {
             const dataResults = responses.map((response) => response.json());
@@ -29,12 +28,31 @@ const SelectedPage = () => {
             cities.forEach((data) => {
                 console.log(data);
                 arr.push(data);
+                setCity(city => [...city, data]);
             });
         });
-        console.log(arr)
-        return (
-            <>
-                (arr.map((data) => {
+    }, []);
+    console.log(favorite);
+    // const requests = favorite.map((item) => fetch(`${API_URL}weather?id=${item.cityId}&appid=${API_KEY}&units=metric`));
+    // Promise.all(requests)
+    //     .then((responses) => {
+    //         const dataResults = responses.map((response) => response.json());
+    //         console.log(dataResults);
+    //         return Promise.all(dataResults);
+    //     })
+    //     .then((cities) => {
+    //         cities.forEach((data) => {
+    //             console.log(data);
+    //             arr.push(data);
+    //             setCity(city => [...city, data]);
+    //         });
+    //     });
+    // console.log(city);
+
+    return (
+        <>
+            {(
+                arr.map((data) => {
                     return (
                         <ItemCardFavorite key={data.id}
                             dt={data.dt}
@@ -47,10 +65,11 @@ const SelectedPage = () => {
                             data={data}
                             id={data.id}
                         />
-                    )
-                }))
-            </>
-        )
+                    );
+                })
+            )}
+        </>
+    );
     // return (
     //     <>
     //         {/* <UserProvider> */}
@@ -59,17 +78,17 @@ const SelectedPage = () => {
     //                 {/* setUrl(`${API_URL}weather?id=${item.cityId}&appid=${API_KEY}&units=metric`);
     //                 console.log(data); */}
     //                 return (
-                        // <ItemCardFavorite key={data.id}
-                        //     dt={data.dt}
-                        //     tempMin={data.main.temp_min}
-                        //     tempMax={data.main.temp_max}
-                        //     name={data.name}
-                        //     country={data.sys.country}
-                        //     icon={data.weather[0].icon}
-                        //     wind={data.wind.speed}
-                        //     data={data}
-                        //     id={data.id}
-                        // />
+    // <ItemCardFavorite key={data.id}
+    //     dt={data.dt}
+    //     tempMin={data.main.temp_min}
+    //     tempMax={data.main.temp_max}
+    //     name={data.name}
+    //     country={data.sys.country}
+    //     icon={data.weather[0].icon}
+    //     wind={data.wind.speed}
+    //     data={data}
+    //     id={data.id}
+    // />
     //                 );
     //             }))
     //         }
