@@ -33,6 +33,7 @@ const SelectedPage = () => {
         });
     }, []);
     console.log(favorite);
+    console.log(city);
     // const requests = favorite.map((item) => fetch(`${API_URL}weather?id=${item.cityId}&appid=${API_KEY}&units=metric`));
     // Promise.all(requests)
     //     .then((responses) => {
